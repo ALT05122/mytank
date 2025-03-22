@@ -7,6 +7,7 @@ import android.view.KeyEvent.KEYCODE_DPAD_DOWN
 import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_DPAD_UP
+import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.Direction.UP
 import ru.Shikhov.BattleTanks.Direction.DOWN
 import ru.Shikhov.BattleTanks.Direction.LEFT
@@ -33,9 +34,25 @@ override fun onKeyDown(keyCode:Int,event: KeyEvent?):Boolean {
 }
 
 private fun move(direction: Direction){
-    when(direction){
-        UP->{
+    when(direction) {
+        UP -> {
+            binding.myTank.rotation = 0f
+            (binding.myTank.layoutParams as FrameLayout.LayoutParams).topMargin += -50
+        }
+        DOWN -> {
+            binding.myTank.rotation = 180f
+            (binding.myTank.layoutParams as FrameLayout.LayoutParams).topMargin += -50
+        }
+        LEFT -> {
+            binding.myTank.rotation = 270f
+            (binding.myTank.layoutParams as FrameLayout.LayoutParams).topMargin += -50
+        }
+        DOWN -> {
+            binding.myTank.rotation = 180f
+            (binding.myTank.layoutParams as FrameLayout.LayoutParams).topMargin += -50
         }
     }
+        binding.container.removeView(binding.myTank)
+                binding . container . addView (binding.myTank)
     }
 }
