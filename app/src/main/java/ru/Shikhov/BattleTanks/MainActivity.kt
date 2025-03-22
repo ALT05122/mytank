@@ -1,5 +1,6 @@
 package ru.Shikhov.BattleTanks
 
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
@@ -9,6 +10,8 @@ import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_DPAD_UP
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.FrameLayout
 import androidx.core.view.marginLeft
 import androidx.core.view.marginTop
@@ -23,18 +26,29 @@ const val CELL_SIZE = 50
 lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private var editMode = false
     private val gridDrawer by lazy{
         GridDrawer(this)
     }
 
 
-    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.title="Menu"
+    }
+
+    private fun switchEditMode(){
+        if (editMode){
+            gridDrawer.removeGrid()
+            binding.materialsContainer.visibility = GONE
+        }else{
+            gridDrawer.drawGrid()
+            binding.materialsContainer.visibility = VISIBLE
+        }
+        editMode = !editMode
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId){
             R.id.menu_settings ->{
                 gridDrawer.drawGrid()
+                switchEditMode()
                 return true
             }
             else ->super.onOptionsItemSelected(item)
@@ -64,8 +79,6 @@ override fun onKeyDown(keyCode:Int,event: KeyEvent?):Boolean {
 
     private fun move(direction: Direction){
         when(direction){
-
-
             UP->{
                 binding.myTank.rotation = 0f
                 if(binding.myTank.marginTop>0){
