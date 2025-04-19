@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 class GridDrawer(private val context: Context) {
     private val allLines = mutableListOf<View>()
 
-    fun removeGrind() {
+    fun removeGrid() {
         val container = binding.container
         allLines.forEach {
             container.removeView(it)
