@@ -1,8 +1,8 @@
 package ru.Shikhov.BattleTanks.enums
 
-enum class Material {
-    EMPTY,
-    BRICK,
-    CONCRETE,
-    GRASS,
+enum class Material(val tankConGoThrough: Boolean) {
+    EMPTY(true),
+    BRICK(false),
+    CONCRETE(false),
+    GRASS(true),
 }
