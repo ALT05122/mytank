@@ -1,4 +1,4 @@
-package ru.Shikhov.BattleTanks
+package ru.Shikhov.BattleTanks.enums
 
 enum class Direction {
     UP,

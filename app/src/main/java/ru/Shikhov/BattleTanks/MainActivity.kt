@@ -1,6 +1,5 @@
 package ru.Shikhov.BattleTanks
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
@@ -14,11 +13,16 @@ import android.view.View.*
 import android.widget.FrameLayout
 import androidx.core.view.marginLeft
 import androidx.core.view.marginTop
-import ru.Shikhov.BattleTanks.Direction.UP
-import ru.Shikhov.BattleTanks.Direction.DOWN
-import ru.Shikhov.BattleTanks.Direction.LEFT
-import ru.Shikhov.BattleTanks.Direction.RIGHT
+import ru.Shikhov.BattleTanks.enums.Direction.UP
+import ru.Shikhov.BattleTanks.enums.Direction.DOWN
+import ru.Shikhov.BattleTanks.enums.Direction.LEFT
+import ru.Shikhov.BattleTanks.enums.Direction.RIGHT
 import ru.Shikhov.BattleTanks.databinding.ActivityMainBinding
+import ru.Shikhov.BattleTanks.drawers.ElementsDrawer
+import ru.Shikhov.BattleTanks.drawers.GridDrawer
+import ru.Shikhov.BattleTanks.enums.Direction
+import ru.Shikhov.BattleTanks.enums.Material
+import ru.Shikhov.BattleTanks.models.Coordinate
 
 const val CELL_SIZE = 50
 
@@ -27,7 +31,11 @@ lateinit var binding: ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private var editMode = false
     private val gridDrawer by lazy{
-        GridDrawer(this)
+        GridDrawer(binding.container)
+    }
+
+    private val elementsDrawer by lazy{
+        ElementsDrawer(binding.container)
     }
 
 
@@ -37,6 +45,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title="Menu"
+
+        binding.editorClear.setOnClickListener { elementsDrawer.currentMaterial = Material.EMPTY }
+        binding.editorBrick.setOnClickListener { elementsDrawer.currentMaterial = Material.BRICK }
+        binding.editorConcrete.setOnClickListener {
+            elementsDrawer.currentMaterial = Material.CONCRETE
+        }
+        binding.editorGrass.setOnClickListener { elementsDrawer.currentMaterial = Material.GRASS }
+        binding.container.setOnTouchListener { _, event ->
+            elementsDrawer.onTuchContainer(event.x, event.y)
+            return@setOnTouchListener true
+        }
     }
 
     private fun switchEditMode(){

@@ -1,31 +1,30 @@
-package ru.Shikhov.BattleTanks
+package ru.Shikhov.BattleTanks.drawers
 
-import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
+import ru.Shikhov.BattleTanks.CELL_SIZE
 
-class GridDrawer(private val context: Context) {
+
+class GridDrawer(private val container: FrameLayout?) {
     private val allLines = mutableListOf<View>()
 
     fun removeGrid() {
-        val container = binding.container
         allLines.forEach {
-            container.removeView(it)
+            container?.removeView(it)
         }
     }
 
     fun drawGrid() {
-        val container = binding.container
-        drawHorizontalLines(container)
-        drawVerticalLines(container)
+        drawHorizontalLines()
+        drawVerticalLines()
     }
 
 
-    private fun drawHorizontalLines(container: FrameLayout?) {
+    private fun drawHorizontalLines() {
         var topMarqin = 0
         while (topMarqin <= container!!.height) {
-            var horizontalLine = View(context)
+            var horizontalLine = View(container.context)
             var layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 1)
             topMarqin += CELL_SIZE
             layoutParams.topMargin = topMarqin
@@ -36,12 +35,11 @@ class GridDrawer(private val context: Context) {
         }
     }
 
-    private fun drawVerticalLines(container: FrameLayout?) {
+    private fun drawVerticalLines() {
         var leftMarqin = 0
         while (leftMarqin <= container!!.width) {
-            var verticalLine = View(context)
-            var layoutParams =
-                FrameLayout.LayoutParams(1, FrameLayout.LayoutParams.MATCH_PARENT)
+            var verticalLine = View(container.context)
+            var layoutParams = FrameLayout.LayoutParams(1, FrameLayout.LayoutParams.MATCH_PARENT)
             leftMarqin += CELL_SIZE
             layoutParams.leftMargin = leftMarqin
             verticalLine.layoutParams = layoutParams
