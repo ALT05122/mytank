@@ -21,8 +21,38 @@ class ElementsDrawer(val container: FrameLayout) {
         val topMargin = y.toInt() - (y.toInt() % CELL_SIZE)
         val leftMargin = x.toInt() - (x.toInt() % CELL_SIZE)
         val coordinate = Coordinate(topMargin, leftMargin)
+        if (currentMaterial == Material.EMPTY){
+            eraseView(coordinate)
+        } else {
+            drawOrReplaceView(coordinate)
+        }
+    }
+
+    private fun drawOrReplaceView(coordinate: Coordinate){
+        val viewOnCoordinate = getElementByCoordinates(coordinate)
+        if (viewOnCoordinate == null){
+            drawView(coordinate)
+            return
+        }
+        if (viewOnCoordinate.material != currentMaterial) {
+            replaceView(coordinate)
+        }
+    }
+
+    private fun replaceView(coordinate: Coordinate){
+        eraseView(coordinate)
         drawView(coordinate)
     }
+
+    private fun eraseView(coordinate: Coordinate){
+        val elementOnCoordinate = getElementByCoordinates(coordinate)
+        if (elementOnCoordinate != null){
+            val erasingView = container.findViewById<View>(elementOnCoordinate.veiwId)
+            container.removeView(erasingView)
+            elementsOnContainer.remove(elementOnCoordinate)
+        }
+    }
+
      fun drawView(coordinate: Coordinate){
         val view = ImageView(container.context)
         val layoutParams = FrameLayout.LayoutParams(CELL_SIZE, CELL_SIZE)
