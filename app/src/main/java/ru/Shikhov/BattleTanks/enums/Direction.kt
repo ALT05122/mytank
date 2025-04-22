@@ -1,8 +1,8 @@
 package ru.Shikhov.BattleTanks.enums
 
-enum class Direction {
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
+enum class Direction(val rotation: Float) {
+    UP(0f),
+    DOWN(180f),
+    RIGHT(290f),
+    LEFT(270f),
 }
