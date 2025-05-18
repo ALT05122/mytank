@@ -1,6 +1,6 @@
 package ru.Shikhov.BattleTanks.drawers
 
-import Utils.checkViewCanMoveThroughBorder
+import ru.Shikhov.BattleTanks.utils.checkViewCanMoveThroughBorder
 import android.view.View
 import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
@@ -8,6 +8,7 @@ import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
+import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
 
 class TankDrawer(val container: FrameLayout) {
     var currentDirection = Direction.UP
@@ -80,8 +81,4 @@ class TankDrawer(val container: FrameLayout) {
         )
         return coordinateList
     }
-
-    private fun getElementByCoordinates (coordinate: Coordinate, elementsOnContainer: List<Element>) =
-        elementsOnContainer.firstOrNull {it.coordinate == coordinate }
-
 }

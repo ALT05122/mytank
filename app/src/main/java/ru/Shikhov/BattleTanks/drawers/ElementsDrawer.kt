@@ -12,6 +12,8 @@ import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.enums.Material
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
+import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
+
 
 class ElementsDrawer(val container: FrameLayout) {
     var currentMaterial = Material.EMPTY
@@ -29,7 +31,7 @@ class ElementsDrawer(val container: FrameLayout) {
     }
 
     private fun drawOrReplaceView(coordinate: Coordinate){
-        val viewOnCoordinate = getElementByCoordinates(coordinate)
+        val viewOnCoordinate = getElementByCoordinates(coordinate,elementsOnContainer)
         if (viewOnCoordinate == null){
             drawView(coordinate)
             return
@@ -45,7 +47,7 @@ class ElementsDrawer(val container: FrameLayout) {
     }
 
     private fun eraseView(coordinate: Coordinate){
-        val elementOnCoordinate = getElementByCoordinates(coordinate)
+        val elementOnCoordinate = getElementByCoordinates(coordinate,elementsOnContainer)
         if (elementOnCoordinate != null){
             val erasingView = container.findViewById<View>(elementOnCoordinate.veiwId)
             container.removeView(erasingView)
@@ -117,13 +119,9 @@ class ElementsDrawer(val container: FrameLayout) {
         }
     }
 
-
-    private fun getElementByCoordinates (coordinate: Coordinate) =
-        elementsOnContainer.firstOrNull {it.coordinate == coordinate }
-
     private fun checkTankCanMoveThroughMaterial (coordinate: Coordinate): Boolean {
         getTankCoordinates(coordinate).forEach {
-            val element = getElementByCoordinates(it)
+            val element = getElementByCoordinates(it,elementsOnContainer)
             if (element != null && !element.material.tankConGoThrough) {
                 return false
             }

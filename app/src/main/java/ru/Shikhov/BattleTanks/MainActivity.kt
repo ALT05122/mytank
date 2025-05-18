@@ -112,7 +112,8 @@ override fun onKeyDown(keyCode:Int,event: KeyEvent?):Boolean {
 
         KEYCODE_SPACE -> bulletDrawer.makeBulletMove(
             binding.myTank,
-            tankDrawer.currentDirection
+            tankDrawer.currentDirection,
+            elementsDrawer.elementsOnContainer
         )
     }
     return super.onKeyDown(keyCode, event)
