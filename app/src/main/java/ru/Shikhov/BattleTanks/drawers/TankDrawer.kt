@@ -1,5 +1,6 @@
 package ru.Shikhov.BattleTanks.drawers
 
+import Utils.checkViewCanMoveThroughBorder
 import android.view.View
 import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
@@ -15,7 +16,7 @@ class TankDrawer(val container: FrameLayout) {
         val layoutParams = myTank.layoutParams as FrameLayout.LayoutParams
         val currentCoordinate = Coordinate(layoutParams.topMargin, layoutParams.leftMargin)
         currentDirection = direction
-        myTank.rotation = direction.rotatoin
+        myTank.rotation = direction.rotation
         when (direction) {
             Direction.UP ->{
                 myTank.rotation = 0f
@@ -43,9 +44,8 @@ class TankDrawer(val container: FrameLayout) {
         }
 
         val nextCoordinate = Coordinate(layoutParams.topMargin, layoutParams.leftMargin)
-        if (checkTankCanMoveThroughBorder(
-                nextCoordinate,
-                myTank
+        if (myTank.checkViewCanMoveThroughBorder(
+                nextCoordinate
             ) && checkTankCanMoveThroughMaterial(nextCoordinate, elementsOnContainer)
         ) {
 
@@ -65,17 +65,6 @@ class TankDrawer(val container: FrameLayout) {
             }
         }
         return true
-    }
-
-    private fun checkTankCanMoveThroughBorder(coordinate: Coordinate, myTank: View): Boolean {
-        if (coordinate.top >= 0 &&
-            coordinate.top + myTank.height <= binding.container.height  &&
-            coordinate.left >= 0 &&
-            coordinate.left + myTank.width <= binding.container.width
-        ) {
-            return true
-        }
-        return false
     }
 
     private fun getTankCoordinates(topLeftCoordinate: Coordinate): List<Coordinate> {

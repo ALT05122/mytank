@@ -7,9 +7,6 @@ import android.view.KeyEvent.*
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.*
-import android.widget.FrameLayout
-import androidx.core.view.marginLeft
-import androidx.core.view.marginTop
 import ru.Shikhov.BattleTanks.enums.Direction.UP
 import ru.Shikhov.BattleTanks.enums.Direction.DOWN
 import ru.Shikhov.BattleTanks.enums.Direction.LEFT
@@ -19,9 +16,7 @@ import ru.Shikhov.BattleTanks.drawers.BulletDrawer
 import ru.Shikhov.BattleTanks.drawers.ElementsDrawer
 import ru.Shikhov.BattleTanks.drawers.GridDrawer
 import ru.Shikhov.BattleTanks.drawers.TankDrawer
-import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.enums.Material
-import ru.Shikhov.BattleTanks.models.Coordinate
 
 const val CELL_SIZE = 50
 
@@ -115,7 +110,7 @@ override fun onKeyDown(keyCode:Int,event: KeyEvent?):Boolean {
             elementsDrawer.elementsOnContainer
         )
 
-        KEYCODE_SPACE -> bulletDrawer.drawBullet(
+        KEYCODE_SPACE -> bulletDrawer.makeBulletMove(
             binding.myTank,
             tankDrawer.currentDirection
         )
