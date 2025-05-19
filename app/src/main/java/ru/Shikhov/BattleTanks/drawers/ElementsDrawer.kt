@@ -89,13 +89,17 @@ class ElementsDrawer(val container: FrameLayout) {
         return elements
     }
 
-    private fun removeIfSingleInstance() {
-        elementsOnContainer.firstOrNull{it.material == Material.EAGLE}?.coordinate?.let{
-            eraseView(it)
+    private fun removeUnwantedInstance(){
+        if (currentMaterial.elementsAmountOnScreen !=0){
+            val erasingElements = elementsOnContainer.filter { it.material == currentMaterial }
+            if (erasingElements.size >= currentMaterial.elementsAmountOnScreen){
+                eraseView(erasingElements[0].coordinate)
+            }
         }
     }
-         private fun drawView(coordinate: Coordinate) {
-             removeIfSingleInstance()
+
+    private fun drawView(coordinate: Coordinate) {
+        removeUnwantedInstance()
              val view = ImageView(container.context)
              val layoutParams= FrameLayout.LayoutParams(
                  currentMaterial.width * CELL_SIZE,
@@ -117,7 +121,7 @@ class ElementsDrawer(val container: FrameLayout) {
              view.scaleType = ImageView.ScaleType.FIT_XY
              container.addView(view)
              elementsOnContainer.add(element)
-         }
+    }
 
     fun move(myTank: View,direction: Direction){
         val layoutParams = myTank.layoutParams as FrameLayout.LayoutParams

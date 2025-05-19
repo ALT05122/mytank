@@ -1,16 +1,18 @@
 package ru.Shikhov.BattleTanks.enums
 
 import  ru.Shikhov.BattleTanks.R
+import java.time.temporal.TemporalAmount
 
 const val CELLS_SIMPLE_ELEMENT = 1
 const val CELLS_EAGLE_WIDTH = 4
 const val CELLS_EAGLE_HEIGHT = 3
+const val CELLS_TANKS_SIZE = 2
 
 enum class Material(
     val tankConGoThrough: Boolean,
     val bulletCanGoThread: Boolean,
     val simpleBulletCanDestroy: Boolean,
-    val canExistOnLyOne: Boolean,
+    val elementsAmountOnScreen: Int,
     val width: Int,
     val height: Int,
     val image: Int
@@ -18,14 +20,14 @@ enum class Material(
     EMPTY(true,
         true,
         true,
-        false,
+        0,
         0,
         0,
         0
     ),
     BRICK(false,
         false, true,
-        false,
+        0,
         CELLS_SIMPLE_ELEMENT,
         CELLS_SIMPLE_ELEMENT,
         R.drawable.brick
@@ -33,7 +35,7 @@ enum class Material(
     CONCRETE(false,
         false,
         false,
-        false,
+        0,
         CELLS_SIMPLE_ELEMENT,
         CELLS_SIMPLE_ELEMENT,
         R.drawable.concrete
@@ -41,7 +43,7 @@ enum class Material(
     GRASS(true,
         true,
         false,
-        false,
+        0,
         CELLS_SIMPLE_ELEMENT,
         CELLS_SIMPLE_ELEMENT,
         R.drawable.grass
@@ -49,9 +51,25 @@ enum class Material(
     EAGLE(false,
         false,
         true,
-        true,
+        1,
         CELLS_EAGLE_WIDTH,
         CELLS_EAGLE_HEIGHT,
         R.drawable.eagle
+    ),
+    ENEMY_TANK_RESPAWN(false,
+        false,
+        true,
+        3,
+        CELLS_TANKS_SIZE,
+        CELLS_TANKS_SIZE,
+        R.drawable.enemy_tank
+    ),
+    PLAYER_TANK_RESPAWN(false,
+        false,
+        true,
+        1,
+        CELLS_TANKS_SIZE,
+        CELLS_TANKS_SIZE,
+        R.drawable.tank
     ),
 }
