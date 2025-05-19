@@ -14,6 +14,7 @@ import ru.Shikhov.BattleTanks.enums.Direction.RIGHT
 import ru.Shikhov.BattleTanks.databinding.ActivityMainBinding
 import ru.Shikhov.BattleTanks.drawers.BulletDrawer
 import ru.Shikhov.BattleTanks.drawers.ElementsDrawer
+import ru.Shikhov.BattleTanks.drawers.EnemyDrawer
 import ru.Shikhov.BattleTanks.drawers.GridDrawer
 import ru.Shikhov.BattleTanks.drawers.TankDrawer
 import ru.Shikhov.BattleTanks.enums.Material
@@ -44,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         LevelStorage(this)
     }
 
+    private val enemyDrawer by lazy {
+        EnemyDrawer(binding.container)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,12 +64,6 @@ class MainActivity : AppCompatActivity() {
         }
         binding.editorGrass.setOnClickListener { elementsDrawer.currentMaterial = Material.GRASS }
         binding.editorEagle.setOnClickListener { elementsDrawer.currentMaterial = Material.EAGLE }
-        binding.editorEnemyRespawn.setOnClickListener {
-            elementsDrawer.currentMaterial = Material.ENEMY_TANK_RESPAWN
-        }
-        binding.editorPlayerRespawn.setOnClickListener {
-            elementsDrawer.currentMaterial = Material.PLAYER_TANK_RESPAWN
-        }
         binding.container.setOnTouchListener { _, event ->
             elementsDrawer.onTuchContainer(event.x, event.y)
             return@setOnTouchListener true
@@ -85,13 +84,11 @@ class MainActivity : AppCompatActivity() {
     private fun showSettings(){
         gridDrawer.drawGrid()
         binding.materialsContainer.visibility = VISIBLE
-        elementsDrawer.changeElementsVisibility(true)
     }
 
     private fun hideSettings(){
         gridDrawer.removeGrid()
         binding.materialsContainer.visibility = GONE
-        elementsDrawer.changeElementsVisibility(false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
