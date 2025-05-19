@@ -34,15 +34,16 @@ class TankDrawer(val container: FrameLayout) {
 
             Direction.LEFT -> {
                 myTank.rotation = 270f
-                (myTank.layoutParams as FrameLayout.LayoutParams).topMargin -= CELL_SIZE
+                (myTank.layoutParams as FrameLayout.LayoutParams).leftMargin -= CELL_SIZE
             }
 
             Direction.RIGHT -> {
                 myTank.rotation = 90f
-                (myTank.layoutParams as FrameLayout.LayoutParams).topMargin -= CELL_SIZE
+                (myTank.layoutParams as FrameLayout.LayoutParams).leftMargin -= CELL_SIZE
 
             }
         }
+
 
         val nextCoordinate = Coordinate(layoutParams.topMargin, layoutParams.leftMargin)
         if (myTank.checkViewCanMoveThroughBorder(

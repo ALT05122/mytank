@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             elementsDrawer.currentMaterial = Material.CONCRETE
         }
         binding.editorGrass.setOnClickListener { elementsDrawer.currentMaterial = Material.GRASS }
+        binding.editorEagle.setOnClickListener { elementsDrawer.currentMaterial = Material.EAGLE }
         binding.container.setOnTouchListener { _, event ->
             elementsDrawer.onTuchContainer(event.x, event.y)
             return@setOnTouchListener true
