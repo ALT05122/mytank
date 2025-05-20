@@ -1,6 +1,9 @@
 package ru.Shikhov.BattleTanks.utils
 
+import android.app.Activity
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageView
 import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.models.Coordinate
@@ -32,3 +35,20 @@ fun View.checkViewCanMoveThroughBorder(coordinate: Coordinate): Boolean {
      }
      return null
  }
+
+ fun Element.drawElement(container: FrameLayout){
+    val view = ImageView(container.context)
+    val layoutParams= FrameLayout.LayoutParams(
+        this.material.width * CELL_SIZE,
+        this.material.height * CELL_SIZE
+    )
+    this.material.image?.let { view.setImageResource(it) }
+    layoutParams.topMargin = coordinate.top
+    layoutParams.leftMargin = coordinate.left
+    view.id = this.viewId
+    view.layoutParams = layoutParams
+    view.scaleType = ImageView.ScaleType.FIT_XY
+    (container.context as Activity).runOnUiThread{
+        container.addView(view)
+    }
+}
