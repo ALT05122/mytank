@@ -5,8 +5,11 @@ import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.enums.Direction
+import ru.Shikhov.BattleTanks.enums.Material
 import ru.Shikhov.BattleTanks.utils.checkViewCanMoveThroughBorder
 import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
+import ru.Shikhov.BattleTanks.utils.runOnUiThread
+import java.util.Random
 
 class Tank (
      val element: Element,
@@ -24,15 +27,30 @@ class Tank (
         if (view.checkViewCanMoveThroughBorder(nextCoordinate)
             && element.checkTankCanMoveThroughMaterial(nextCoordinate, elementsOnContainer)
         ) {
-            binding.container.removeView(view)
-            binding.container.addView(view,0)
+            emulateViewMoving(container,view)
             element.coordinate = nextCoordinate
         } else {
             element.coordinate = currentCoordinate
             (view.layoutParams as FrameLayout.LayoutParams).topMargin = currentCoordinate.top
             (view.layoutParams as FrameLayout.LayoutParams).leftMargin = currentCoordinate.left
+            changeDirectionForEnemyTank()
         }
     }
+
+    private fun changeDirectionForEnemyTank() {
+        if (element.material == Material.ENEMY_TANK) {
+            val randomDirection = ru.Shikhov.BattleTanks.enums.Direction.values()[kotlin.random.Random.nextInt(ru.Shikhov.BattleTanks.enums.Direction.values().size)]
+            this.direction = randomDirection
+        }
+    }
+
+    private fun emulateViewMoving(container: FrameLayout, view: View){
+        container.runOnUiThread {
+            binding.container.removeView(view)
+            binding.container.addView(view, 0)
+        }
+    }
+
     private fun getTankCurrentCoordinate(tank: View):Coordinate{
         return  Coordinate(
             (tank.layoutParams as FrameLayout.LayoutParams).topMargin,
@@ -44,20 +62,26 @@ class Tank (
         val layoutParams = view.layoutParams as FrameLayout.LayoutParams
         when (direction) {
             Direction.UP ->{
+                view.rotation = 0f
                 (view.layoutParams as FrameLayout.LayoutParams).topMargin += -CELL_SIZE
 
             }
 
             Direction.DOWN -> {
+                view.rotation = 180f
                 (view.layoutParams as FrameLayout.LayoutParams).topMargin += CELL_SIZE
 
             }
 
             Direction.LEFT -> {
+                view.rotation = 270f
+
                 (view.layoutParams as FrameLayout.LayoutParams).leftMargin -= CELL_SIZE
             }
 
             Direction.RIGHT -> {
+                view.rotation = 90f
+
                 (view.layoutParams as FrameLayout.LayoutParams).leftMargin -= CELL_SIZE
 
             }
