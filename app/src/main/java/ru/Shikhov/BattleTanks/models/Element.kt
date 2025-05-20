@@ -5,7 +5,7 @@ import ru.Shikhov.BattleTanks.enums.Material
 data class Element constructor(
     val viewId: Int = View.generateViewId(),
     val material: Material,
-    val coordinate: Coordinate,
+    var coordinate: Coordinate,
     val width: Int,
     val height: Int,
 ){
