@@ -59,7 +59,7 @@ enum class Material(
     PLAYER_TANK(false,
         false,
         true,
-        0,
+        1,
         CELLS_TANKS_SIZE,
         CELLS_TANKS_SIZE,
         R.drawable.tank,
