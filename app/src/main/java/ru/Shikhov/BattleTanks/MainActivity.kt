@@ -13,7 +13,6 @@ import ru.Shikhov.BattleTanks.enums.Direction.DOWN
 import ru.Shikhov.BattleTanks.enums.Direction.LEFT
 import ru.Shikhov.BattleTanks.enums.Direction.RIGHT
 import ru.Shikhov.BattleTanks.databinding.ActivityMainBinding
-import ru.Shikhov.BattleTanks.drawers.BulletDrawer
 import ru.Shikhov.BattleTanks.drawers.ElementsDrawer
 import ru.Shikhov.BattleTanks.drawers.EnemyDrawer
 import ru.Shikhov.BattleTanks.drawers.GridDrawer
@@ -22,12 +21,14 @@ import ru.Shikhov.BattleTanks.enums.Material
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
+import ru.Shikhov.BattleTanks.drawers.BulletDrawer
 
 const val CELL_SIZE = 50
 
 lateinit var binding: ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()
+{
     private var editMode = false
 
     private lateinit var playerTank: Tank
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
             Element(
                 material = Material.PLAYER_TANK,
                 coordinate = getPlayerTankCoordinate(elementWidth, elementHeight)
-            ), UP
+            ), UP,
+            BulletDrawer(binding.container, elementsDrawer.elementsOnContainer)
         )
         return playerTank
     }
@@ -76,10 +78,6 @@ class MainActivity : AppCompatActivity() {
         ElementsDrawer(binding.container)
     }
 
-    private val bulletDrawer by lazy {
-        BulletDrawer(binding.container)
-    }
-
     private val levelStorage by lazy {
         LevelStorage(this)
     }
@@ -102,8 +100,10 @@ class MainActivity : AppCompatActivity() {
             elementsDrawer.currentMaterial = Material.CONCRETE
         }
         binding.editorGrass.setOnClickListener { elementsDrawer.currentMaterial = Material.GRASS }
-        binding.editorEagle.setOnClickListener { elementsDrawer.currentMaterial = Material.EAGLE }
         binding.container.setOnTouchListener { _, event ->
+            if (!editMode) {
+                return@setOnTouchListener true
+            }
             elementsDrawer.onTuchContainer(event.x, event.y)
             return@setOnTouchListener true
         }
@@ -183,17 +183,13 @@ class MainActivity : AppCompatActivity() {
         enemyDrawer.moveEnemyTanks()
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown( keyCode: Int, event: KeyEvent?): Boolean {
         when (keyCode) {
             KEYCODE_DPAD_UP -> move(UP)
             KEYCODE_DPAD_DOWN -> move(DOWN)
             KEYCODE_DPAD_LEFT -> move(LEFT)
             KEYCODE_DPAD_RIGHT -> move(RIGHT)
-            KEYCODE_SPACE -> bulletDrawer.makeBulletMove(
-                binding.container.findViewById(playerTank.element.viewId),
-                playerTank.direction,
-                elementsDrawer.elementsOnContainer
-            )
+            KEYCODE_SPACE -> playerTank.bulletDrawer.makeBulletMove(playerTank)
         }
         return super.onKeyDown(keyCode, event)
     }

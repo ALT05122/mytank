@@ -1,7 +1,6 @@
 package ru.Shikhov.BattleTanks.enums
 
 import  ru.Shikhov.BattleTanks.R
-import java.time.temporal.TemporalAmount
 
 const val CELLS_SIMPLE_ELEMENT = 1
 const val CELLS_EAGLE_WIDTH = 4
@@ -10,7 +9,7 @@ const val CELLS_TANKS_SIZE = 2
 
 enum class Material(
     val tankConGoThrough: Boolean,
-    val bulletCanGoThread: Boolean,
+    val bulletCanGoThrough: Boolean,
     val simpleBulletCanDestroy: Boolean,
     val elementsAmountOnScreen: Int,
     val width: Int,
@@ -26,7 +25,8 @@ enum class Material(
         null,
     ),
     BRICK(false,
-        false, true,
+        false,
+        true,
         0,
         CELLS_SIMPLE_ELEMENT,
         CELLS_SIMPLE_ELEMENT,

@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.binding
+import ru.Shikhov.BattleTanks.drawers.BulletDrawer
 import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.enums.Material
 import ru.Shikhov.BattleTanks.utils.checkViewCanMoveThroughBorder
@@ -11,9 +12,11 @@ import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
 import ru.Shikhov.BattleTanks.utils.runOnUiThread
 import java.util.Random
 
-class Tank (
+class Tank constructor(
      val element: Element,
-     var direction: Direction
+     var direction: Direction,
+     val bulletDrawer: BulletDrawer
+
 ){
     fun move(direction: Direction,
              container: FrameLayout,
