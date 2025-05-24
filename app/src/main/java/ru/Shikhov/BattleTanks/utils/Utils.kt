@@ -8,6 +8,7 @@ import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
+import ru.Shikhov.BattleTanks.models.Tank
 
 fun View.checkViewCanMoveThroughBorder(coordinate: Coordinate): Boolean {
     return coordinate.top >= 0 &&
@@ -35,6 +36,9 @@ fun View.checkViewCanMoveThroughBorder(coordinate: Coordinate): Boolean {
      }
      return null
  }
+fun getTankByCoordinates(coordinate: Coordinate, tankList: List<Tank>): Element?{
+    return getElementByCoordinates(coordinate,tankList.map{it.element})
+}
 
  fun Element.drawElement(container: FrameLayout){
     val view = ImageView(container.context)

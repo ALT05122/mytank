@@ -18,9 +18,10 @@ import ru.Shikhov.BattleTanks.utils.runOnUiThread
 private const val BULLET_WIDTH = 15
 private const val BULLET_HEIGHT = 15
 
-class BulletDrawer(private val container: FrameLayout,
-private val elements: MutableList<Element>//,
-                   //val enemyDrawer: EnemyDrawer
+class BulletDrawer(
+    private val container: FrameLayout,
+    private val elements: MutableList<Element>,
+    val enemyDrawer: EnemyDrawer
 
 ) {
 
