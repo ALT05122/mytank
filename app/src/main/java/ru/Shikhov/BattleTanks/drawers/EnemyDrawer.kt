@@ -4,6 +4,7 @@ package ru.Shikhov.BattleTanks.drawers
 import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.GameCore.isPlaying
+import ru.Shikhov.BattleTanks.SoundManager
 import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.enums.CELLS_TANKS_SIZE
 import ru.Shikhov.BattleTanks.enums.Direction
@@ -82,12 +83,17 @@ class EnemyDrawer (
     }
 
     private fun goThrounghAllTanks(){
-            tanks.toList().forEach{
-                it.move(it.direction, container, elements)
-                if (checkIfChanceBiggerThanRandom (10)) {
-                    bulletDrawer.addNewBulletForTank(it)
-                }
+        if (tanks.isNotEmpty()){
+            SoundManager.tankMove()
+        }else{
+            SoundManager.tankStop()
+        }
+        tanks.toList().forEach{
+            it.move(it.direction, container, elements)
+            if (checkIfChanceBiggerThanRandom (10)) {
+                bulletDrawer.addNewBulletForTank(it)
             }
+        }
     }
 
 
@@ -110,7 +116,6 @@ class EnemyDrawer (
     }
 
     fun removeTank(tankIndex: Int){
-        if (tankIndex < 0 ) return
         tanks.removeAt(tankIndex)
     }
 }
