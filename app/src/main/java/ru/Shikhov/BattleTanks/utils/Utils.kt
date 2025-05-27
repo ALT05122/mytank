@@ -1,7 +1,6 @@
 package ru.Shikhov.BattleTanks.utils
 
 import android.app.Activity
-import android.health.connect.datatypes.units.Percentage
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -10,7 +9,6 @@ import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
-import java.util.Random
 
 const val TOTAL_PERCENT = 100
 
@@ -67,4 +65,11 @@ fun  FrameLayout.runOnUiThread(block: () -> Unit){
 }
 fun checkIfChanceBiggerThanRandom(percentChance: Int): Boolean{
     return kotlin.random.Random.nextInt(TOTAL_PERCENT) <= percentChance
+}
+
+ fun View.getViewCoordinate():Coordinate{
+    return  Coordinate(
+        (this.layoutParams as FrameLayout.LayoutParams).topMargin,
+        (this.layoutParams as FrameLayout.LayoutParams).leftMargin
+    )
 }

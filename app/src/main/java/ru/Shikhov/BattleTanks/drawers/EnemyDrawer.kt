@@ -7,6 +7,7 @@ import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.enums.CELLS_TANKS_SIZE
 import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.enums.Material
+import ru.Shikhov.BattleTanks.models.Bullet
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
@@ -23,6 +24,7 @@ class EnemyDrawer (
     private var currentCoordinate:Coordinate
     val tanks = mutableListOf<Tank>()
     private var moveAllTanksThread: Thread? = null
+    lateinit var bulletDrawer: BulletDrawer
 
     init {
         respawnList = getRespawnList()
@@ -60,7 +62,7 @@ class EnemyDrawer (
             material = Material.ENEMY_TANK,
             coordinate = currentCoordinate
             ), Direction.DOWN,
-            BulletDrawer(container, elements, this)
+            this
         )
         enemyTank.element.drawElement(container)
         tanks.add(enemyTank)
@@ -80,7 +82,7 @@ class EnemyDrawer (
             tanks.forEach{
                 it.move(it.direction, container, elements)
                 if (checkIfChanceBiggerThanRandom (10)) {
-                    it.bulletDrawer.makeBulletMove(it)
+                    bulletDrawer.addNewBulletForTank(it)
                 }
             }
         })

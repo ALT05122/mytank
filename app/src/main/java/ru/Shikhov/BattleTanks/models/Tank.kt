@@ -12,13 +12,14 @@ import ru.Shikhov.BattleTanks.utils.checkIfChanceBiggerThanRandom
 import ru.Shikhov.BattleTanks.utils.checkViewCanMoveThroughBorder
 import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
 import ru.Shikhov.BattleTanks.utils.getTankByCoordinates
+import ru.Shikhov.BattleTanks.utils.getViewCoordinate
 import ru.Shikhov.BattleTanks.utils.runOnUiThread
 import java.util.Random
 
 class Tank constructor(
      val element: Element,
      var direction: Direction,
-     val bulletDrawer: BulletDrawer
+     private val enemyDrawer: EnemyDrawer
 
 ){
     fun move(direction: Direction,
@@ -26,7 +27,7 @@ class Tank constructor(
              elementsOnContainer: List<Element>
     ){
         val view = container.findViewById<View>(element.viewId) ?: return
-        val currentCoordinate = getTankCurrentCoordinate(view)
+        val currentCoordinate = view.getViewCoordinate()
         this.direction = direction
         view.rotation = direction.rotation
         val nextCoordinate = getTankNextCoordinate(view)
@@ -67,13 +68,6 @@ class Tank constructor(
                 }
             }
 
-            private fun getTankCurrentCoordinate(tank: View):Coordinate{
-                return  Coordinate(
-                    (tank.layoutParams as FrameLayout.LayoutParams).topMargin,
-                    (tank.layoutParams as FrameLayout.LayoutParams).leftMargin
-                )
-            }
-
             private fun getTankNextCoordinate(view: View): Coordinate{
                 val layoutParams = view.layoutParams as FrameLayout.LayoutParams
                 when (direction) {
@@ -112,7 +106,7 @@ class Tank constructor(
                 for (anyCoordinate in getTankCoordinates(coordinate)){
                     var element = getElementByCoordinates(anyCoordinate, elementsOnContainer)
                     if (element == null) {
-                        element = getTankByCoordinates(anyCoordinate, bulletDrawer.enemyDrawer.tanks)
+                        element = getTankByCoordinates(anyCoordinate, enemyDrawer.tanks)
                     }
                     if (element != null && !element.material.tankConGoThrough) {
                         if (this == element){
@@ -137,5 +131,4 @@ class Tank constructor(
                 )
                 return coordinateList
             }
-        }
-    }
+}
