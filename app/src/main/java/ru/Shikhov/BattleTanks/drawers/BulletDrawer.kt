@@ -13,6 +13,7 @@ import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
 import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
+import ru.Shikhov.BattleTanks.utils.getTankByCoordinates
 import ru.Shikhov.BattleTanks.utils.runOnUiThread
 
 private const val BULLET_WIDTH = 15
@@ -31,11 +32,7 @@ class BulletDrawer(
 
     private fun checkBulletThreadDlive() = bulletThread != null && bulletThread!!.isAlive
 
-    fun makeBulletMove(
-        tank: Tank,
-        //elementsOnContainer: MutableList<Element>
-
-    ){
+    fun makeBulletMove(tank: Tank){
         canBulletGoFurther = true
         this.tank = tank
         val currentDirection = tank.direction
@@ -89,21 +86,20 @@ class BulletDrawer(
         }
     }
 
-    private fun compareCollections(
-        detectedCoordinatesList: List<Coordinate>
-        ) {
+    private fun compareCollections(detectedCoordinatesList: List<Coordinate>) {
         for (coordinate in detectedCoordinatesList){
-            val element = getElementByCoordinates(coordinate, elements)
+            var element = getElementByCoordinates(coordinate, elements)
+            if (element == null){
+               element = getTankByCoordinates(coordinate, enemyDrawer.tanks)
+            }
             if (element == tank.element){
-                    continue
-                }
-        removeElementsAndStopBullet(element)
+                continue
+            }
+            removeElementsAndStopBullet(element)
         }
     }
 
-    private fun removeElementsAndStopBullet(
-        element: Element?,
-    ) {
+    private fun removeElementsAndStopBullet(element: Element?) {
         if (element != null) {
             if (element.material.bulletCanGoThrough) {
                 return
