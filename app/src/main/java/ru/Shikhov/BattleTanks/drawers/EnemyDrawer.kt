@@ -3,6 +3,7 @@ package ru.Shikhov.BattleTanks.drawers
 
 import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
+import ru.Shikhov.BattleTanks.GameCore.isPlaying
 import ru.Shikhov.BattleTanks.binding
 import ru.Shikhov.BattleTanks.enums.CELLS_TANKS_SIZE
 import ru.Shikhov.BattleTanks.enums.Direction
@@ -24,6 +25,7 @@ class EnemyDrawer (
     private var currentCoordinate:Coordinate
     val tanks = mutableListOf<Tank>()
     lateinit var bulletDrawer: BulletDrawer
+    private var gameStarted = false
 
     init {
         respawnList = getRespawnList()
@@ -67,9 +69,12 @@ class EnemyDrawer (
         tanks.add(enemyTank)
     }
 
-    fun moveEnemyTanks() {
+    private fun moveEnemyTanks() {
         Thread(Runnable {
             while (true) {
+                if (!isPlaying()){
+                    continue
+                }
                 goThrounghAllTanks()
                 Thread.sleep(400)
             }
@@ -87,13 +92,21 @@ class EnemyDrawer (
 
 
     fun startEnemyCreation(){
+        if (gameStarted){
+            return
+        }
+        gameStarted = true
         Thread(Runnable {
             while (enemyAmount < MAX_ENEMY_AMOUNT) {
+                if (!isPlaying()){
+                    continue
+                }
                 drawEnemy()
                 enemyAmount++
                 Thread.sleep(3000)
             }
         }).start()
+        moveEnemyTanks()
     }
 
     fun removeTank(tankIndex: Int){

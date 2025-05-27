@@ -9,6 +9,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.*
 import android.view.ViewTreeObserver
+import androidx.core.content.ContextCompat
+import ru.Shikhov.BattleTanks.GameCore.isPlaying
+import ru.Shikhov.BattleTanks.GameCore.startOrPauseTheGame
 import ru.Shikhov.BattleTanks.enums.Direction.UP
 import ru.Shikhov.BattleTanks.enums.Direction.DOWN
 import ru.Shikhov.BattleTanks.enums.Direction.LEFT
@@ -33,6 +36,7 @@ lateinit var binding: ActivityMainBinding
 class MainActivity : AppCompatActivity()
 {
     private var editMode = false
+    private lateinit var item: MenuItem
 
     private lateinit var playerTank: Tank
     private lateinit var eagle: Element
@@ -163,6 +167,7 @@ class MainActivity : AppCompatActivity()
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.settings,menu)
+        item = menu!!.findItem(R.id.menu_play)
         return true
     }
 
@@ -180,7 +185,15 @@ class MainActivity : AppCompatActivity()
             }
 
             R.id.menu_play -> {
-                startTheGame()
+                if (editMode){
+                    return true
+                }
+                startOrPauseTheGame()
+                if (isPlaying()){
+                    startTheGame()
+                } else {
+                    pauseTheGame()
+                }
                 true
             }
 
@@ -188,12 +201,15 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+
+    private fun pauseTheGame(){
+        item.icon = ContextCompat.getDrawable(this, R.drawable.ic_play)
+        pauseTheGame()
+    }
+
     private fun startTheGame(){
-        if (editMode){
-            return
-        }
+        item.icon = ContextCompat.getDrawable(this, R.drawable.ic_pause)
         enemyDrawer.startEnemyCreation()
-        enemyDrawer.moveEnemyTanks()
     }
 
     override fun onKeyDown( keyCode: Int, event: KeyEvent?): Boolean {
