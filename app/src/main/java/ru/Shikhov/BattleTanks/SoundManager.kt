@@ -5,26 +5,19 @@ import android.content.Context
 import android.media.MediaPlayer
 import ru.Shikhov.BattleTanks.models.Bullet
 
-
-@SuppressLint("StaticFieldLeak")
-object SoundManager {
-    private lateinit var bulletBurstPlayer: MediaPlayer
-    private lateinit var bulletShotPlayer: MediaPlayer
-    private lateinit var introMusicPlayer: MediaPlayer
-    private lateinit var tankMovePlayerFirst: MediaPlayer
-    private lateinit var tankMovePlayerSecond: MediaPlayer
+class SoundManager(context: Context) {
+    private var bulletBurstPlayer = MediaPlayer.create(context, R.raw.bullet_burst)
+    private var bulletShotPlayer = MediaPlayer.create(context, R.raw.bullet_shot)
+    private var introMusicPlayer = MediaPlayer.create(context, R.raw.tanks_pre_music)
+    private var tankMovePlayerFirst = MediaPlayer.create(context, R.raw.tank_move_long)
+    private var tankMovePlayerSecond = MediaPlayer.create(context, R.raw.tank_move_long)
     private var isIntroFinished = false
 
-    var context: Context? = null
-        set(value) {
-            bulletBurstPlayer = MediaPlayer.create(value, R.raw.bullet_burst)
-            bulletShotPlayer = MediaPlayer.create(value, R.raw.bullet_shot)
-            introMusicPlayer = MediaPlayer.create(value, R.raw.tanks_pre_music)
-            prepareGapLessTankMoveSound(value!!)
-        }
-    private fun prepareGapLessTankMoveSound(context: Context){
-        tankMovePlayerSecond = MediaPlayer.create(context, R.raw.tank_move_long)
-        tankMovePlayerFirst = MediaPlayer.create(context, R.raw.tank_move_long)
+    init {
+        prepareGapLessTankMoveSound()
+    }
+
+    private fun prepareGapLessTankMoveSound(){
         tankMovePlayerFirst.isLooping = true
         tankMovePlayerSecond.isLooping = true
         tankMovePlayerFirst.setNextMediaPlayer(tankMovePlayerSecond)

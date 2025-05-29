@@ -9,8 +9,6 @@ import android.view.MenuItem
 import android.view.View.*
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
-import ru.Shikhov.BattleTanks.GameCore.isPlaying
-import ru.Shikhov.BattleTanks.GameCore.startOrPauseTheGame
 import ru.Shikhov.BattleTanks.enums.Direction.UP
 import ru.Shikhov.BattleTanks.enums.Direction.DOWN
 import ru.Shikhov.BattleTanks.enums.Direction.LEFT
@@ -42,8 +40,18 @@ class MainActivity : AppCompatActivity()
         BulletDrawer(
             binding.container,
             elementsDrawer.elementsOnContainer,
-            enemyDrawer
+            enemyDrawer,
+            soundManager,
+            gameCore
         )
+    }
+
+    private val gameCore by lazy {
+        GameCore(this)
+    }
+
+    private val soundManager by lazy {
+        SoundManager(this)
     }
 
 
@@ -96,7 +104,7 @@ class MainActivity : AppCompatActivity()
     }
 
     private val enemyDrawer by lazy {
-        EnemyDrawer(binding.container, elementsDrawer.elementsOnContainer)
+        EnemyDrawer(binding.container, elementsDrawer.elementsOnContainer, soundManager, gameCore)
     }
 
 
@@ -104,8 +112,6 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        SoundManager.context = this
 
         supportActionBar?.title="Menu"
 
@@ -173,22 +179,21 @@ class MainActivity : AppCompatActivity()
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.menu_settings ->{
-                gridDrawer.drawGrid()
                 switchEditMode()
-                return true
+                true
             }
 
             R.id.menu_save ->{
                 levelStorage.saveLevel(elementsDrawer.elementsOnContainer)
-                return true
+                true
             }
 
             R.id.menu_play -> {
                 if (editMode){
                     return true
                 }
-                startOrPauseTheGame()
-                if (isPlaying()){
+                gameCore.startOrPauseTheGame()
+                if (gameCore.isPlaying()){
                     startTheGame()
                 } else {
                     pauseTheGame()
@@ -196,24 +201,27 @@ class MainActivity : AppCompatActivity()
                 true
             }
 
-            else ->super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
 
     private fun pauseTheGame(){
         item.icon = ContextCompat.getDrawable(this, R.drawable.ic_play)
-        pauseTheGame()
-        SoundManager.pauseSounds()
+        gameCore.pauseTheGame()
+        soundManager.pauseSounds()
     }
 
     private fun startTheGame(){
         item.icon = ContextCompat.getDrawable(this, R.drawable.ic_pause)
         enemyDrawer.startEnemyCreation()
-        SoundManager.playIntroMusic()
+        soundManager.playIntroMusic()
     }
 
     override fun onKeyDown( keyCode: Int, event: KeyEvent?): Boolean {
+        if (!gameCore.isPlaying()){
+            return super.onKeyDown(keyCode, event)
+        }
         when (keyCode) {
             KEYCODE_DPAD_UP -> onButtonPressed(UP)
             KEYCODE_DPAD_DOWN -> onButtonPressed(DOWN)
@@ -233,13 +241,13 @@ class MainActivity : AppCompatActivity()
     }
 
     private fun onButtonPressed(direction: Direction) {
-        SoundManager.tankMove()
+        soundManager.tankMove()
         playerTank.move(direction, binding.container, elementsDrawer.elementsOnContainer)
     }
 
     fun onButtonReleased(){
         if (enemyDrawer.tanks.isEmpty()) {
-            SoundManager.tankStop()
+            soundManager.tankStop()
         }
     }
 }
