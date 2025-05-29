@@ -23,6 +23,7 @@ import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
 import ru.Shikhov.BattleTanks.drawers.BulletDrawer
+import ru.Shikhov.BattleTanks.sounds.MainSoundPlayer
 
 const val CELL_SIZE = 50
 
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity()
     }
 
     private val soundManager by lazy {
-        SoundManager(this)
+        MainSoundPlayer(this)
     }
 
 
@@ -113,6 +114,7 @@ class MainActivity : AppCompatActivity()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        soundManager.loadSounds()
         supportActionBar?.title="Menu"
 
         binding.editorClear.setOnClickListener { elementsDrawer.currentMaterial = Material.EMPTY }

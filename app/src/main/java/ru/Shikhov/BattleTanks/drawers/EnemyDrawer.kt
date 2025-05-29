@@ -4,12 +4,10 @@ package ru.Shikhov.BattleTanks.drawers
 import android.widget.FrameLayout
 import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.GameCore
-import ru.Shikhov.BattleTanks.SoundManager
-import ru.Shikhov.BattleTanks.binding
+import ru.Shikhov.BattleTanks.sounds.MainSoundPlayer
 import ru.Shikhov.BattleTanks.enums.CELLS_TANKS_SIZE
 import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.enums.Material
-import ru.Shikhov.BattleTanks.models.Bullet
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
@@ -20,7 +18,7 @@ private const val MAX_ENEMY_AMOUNT = 20
 class EnemyDrawer (
     private val container: FrameLayout,
     private val elements: MutableList<Element>,
-    private val soundManager: SoundManager,
+    private val soundManager: MainSoundPlayer,
     private val gameCore: GameCore
 ) {
     private val respawnList: List<Coordinate>

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import ru.Shikhov.BattleTanks.CELL_SIZE
 import ru.Shikhov.BattleTanks.GameCore
 import ru.Shikhov.BattleTanks.R
-import ru.Shikhov.BattleTanks.SoundManager
+import ru.Shikhov.BattleTanks.sounds.MainSoundPlayer
 import ru.Shikhov.BattleTanks.enums.Direction
 import ru.Shikhov.BattleTanks.enums.Material
 import ru.Shikhov.BattleTanks.models.Bullet
@@ -19,7 +19,6 @@ import ru.Shikhov.BattleTanks.utils.getElementByCoordinates
 import ru.Shikhov.BattleTanks.utils.getTankByCoordinates
 import ru.Shikhov.BattleTanks.utils.getViewCoordinate
 import ru.Shikhov.BattleTanks.utils.runOnUiThread
-import kotlin.text.Typography.bullet
 
 private const val BULLET_WIDTH = 15
 private const val BULLET_HEIGHT = 15
@@ -28,7 +27,7 @@ class BulletDrawer(
     private val container: FrameLayout,
     private val elements: MutableList<Element>,
     private val enemyDrawer: EnemyDrawer,
-    private val soundManager: SoundManager,
+    private val soundManager: MainSoundPlayer,
     private val gameCore: GameCore
 
 ) {
@@ -176,7 +175,7 @@ class BulletDrawer(
         val tanksElement = enemyDrawer.tanks.map { it.element }
         val tanksIndex = tanksElement.indexOf(element)
         if (tanksIndex < 0) return
-        soundManager.BulletBurst()
+        soundManager.bulletBurst()
         enemyDrawer.removeTank(tanksIndex)
     }
 
