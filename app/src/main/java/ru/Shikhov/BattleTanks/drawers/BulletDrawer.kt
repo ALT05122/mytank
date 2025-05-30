@@ -131,9 +131,9 @@ class BulletDrawer(
 
     private fun compareCollections(detectedCoordinatesList: List<Coordinate>, bullet: Bullet) {
         for (coordinate in detectedCoordinatesList){
-            var element = getElementByCoordinates(coordinate, elements)
+            var element = getTankByCoordinates(coordinate, enemyDrawer.tanks)
             if (element == null){
-               element = getTankByCoordinates(coordinate, enemyDrawer.tanks)
+               element = getElementByCoordinates(coordinate, elements)
             }
             if (element == bullet.tank.element){
                 continue
@@ -144,28 +144,31 @@ class BulletDrawer(
 
     private fun removeElementsAndStopBullet(element: Element?, bullet: Bullet) {
         if (element != null) {
-            if (element.material.bulletCanGoThrough) {
-                return
-            }
             if (bullet.tank.element.material == Material.ENEMY_TANK
                 && element.material == Material.ENEMY_TANK
-                ){
+            ){
                 stopBullet(bullet)
+                return
+            }
+            if (element.material.bulletCanGoThrough) {
                 return
             }
             if (element.material.simpleBulletCanDestroy){
                 stopBullet(bullet)
                 removeView(element)
                 removeElement(element)
+                stopGameIfNecessary(element)
                 removeTank(element)
             }else{
                 stopBullet(bullet)
             }
         }
     }
-
     private fun removeElement(element: Element){
         elements.remove(element)
+    }
+
+    private fun stopGameIfNecessary(element: Element){
         if (element.material == Material.PLAYER_TANK || element.material == Material.EAGLE){
             gameCore.destroyPlayerOrBase()
         }

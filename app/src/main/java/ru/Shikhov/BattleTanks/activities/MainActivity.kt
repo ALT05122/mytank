@@ -29,13 +29,13 @@ import ru.Shikhov.BattleTanks.models.Element
 import ru.Shikhov.BattleTanks.models.Tank
 import ru.Shikhov.BattleTanks.drawers.BulletDrawer
 import ru.Shikhov.BattleTanks.sounds.MainSoundPlayer
+import ru.Shikhov.BattleTanks.utils.ProgressIndicator
 
 const val CELL_SIZE = 50
 
 lateinit var binding: ActivityMainBinding
 
-class MainActivity : AppCompatActivity()
-{
+class MainActivity : AppCompatActivity(), ProgressIndicator {
     private var editMode = false
     private lateinit var item: MenuItem
 
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity()
     }
 
     private val soundManager by lazy {
-        MainSoundPlayer(this)
+        MainSoundPlayer(this, this)
     }
 
 
@@ -263,5 +263,18 @@ class MainActivity : AppCompatActivity()
             recreate()
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun showProgress() {
+        binding.container.visibility = INVISIBLE
+        binding.totalContainer.setBackgroundResource(R.color.gray)
+        binding.container.visibility = GONE
+    }
+
+    override fun dismissProgress() {
+        Thread.sleep(300)
+        binding.container.visibility = VISIBLE
+        binding.totalContainer.setBackgroundResource(R.color.black)
+        binding.container.visibility = GONE
     }
 }
