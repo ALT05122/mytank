@@ -1,5 +1,7 @@
-package ru.Shikhov.BattleTanks
+package ru.Shikhov.BattleTanks.activities
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
@@ -9,6 +11,9 @@ import android.view.MenuItem
 import android.view.View.*
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
+import ru.Shikhov.BattleTanks.GameCore
+import ru.Shikhov.BattleTanks.LevelStorage
+import ru.Shikhov.BattleTanks.R
 import ru.Shikhov.BattleTanks.enums.Direction.UP
 import ru.Shikhov.BattleTanks.enums.Direction.DOWN
 import ru.Shikhov.BattleTanks.enums.Direction.LEFT
@@ -115,7 +120,7 @@ class MainActivity : AppCompatActivity()
         setContentView(binding.root)
 
         soundManager.loadSounds()
-        supportActionBar?.title="Menu"
+        supportActionBar?.title="Me````u"
 
         binding.editorClear.setOnClickListener { elementsDrawer.currentMaterial = Material.EMPTY }
         binding.editorBrick.setOnClickListener { elementsDrawer.currentMaterial = Material.BRICK }
@@ -251,5 +256,12 @@ class MainActivity : AppCompatActivity()
         if (enemyDrawer.tanks.isEmpty()) {
             soundManager.tankStop()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == SCORE_REQUEST_CODE){
+            recreate()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

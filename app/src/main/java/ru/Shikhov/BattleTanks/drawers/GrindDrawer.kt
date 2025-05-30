@@ -3,7 +3,7 @@ package ru.Shikhov.BattleTanks.drawers
 import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
-import ru.Shikhov.BattleTanks.CELL_SIZE
+import ru.Shikhov.BattleTanks.activities.CELL_SIZE
 
 
 class GridDrawer(private val container: FrameLayout?) {

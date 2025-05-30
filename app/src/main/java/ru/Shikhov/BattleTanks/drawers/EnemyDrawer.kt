@@ -2,7 +2,7 @@ package ru.Shikhov.BattleTanks.drawers
 
 
 import android.widget.FrameLayout
-import ru.Shikhov.BattleTanks.CELL_SIZE
+import ru.Shikhov.BattleTanks.activities.CELL_SIZE
 import ru.Shikhov.BattleTanks.GameCore
 import ru.Shikhov.BattleTanks.sounds.MainSoundPlayer
 import ru.Shikhov.BattleTanks.enums.CELLS_TANKS_SIZE
@@ -115,8 +115,17 @@ class EnemyDrawer (
         moveEnemyTanks()
     }
 
+    private fun isAllTanksDestroyed(): Boolean{
+        return enemyAmount == MAX_ENEMY_AMOUNT && tanks.toList().isEmpty()
+    }
+
+    private fun getPlayerScore() = enemyAmount * 100
+
     fun removeTank(tankIndex: Int){
         tanks.removeAt(tankIndex)
+        if (isAllTanksDestroyed()){
+            gameCore.playerWon(getPlayerScore())
+        }
     }
 }
 

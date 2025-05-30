@@ -2,7 +2,7 @@ package ru.Shikhov.BattleTanks.drawers
 
 import android.view.View
 import android.widget.FrameLayout
-import ru.Shikhov.BattleTanks.CELL_SIZE
+import ru.Shikhov.BattleTanks.activities.CELL_SIZE
 import ru.Shikhov.BattleTanks.enums.Material
 import ru.Shikhov.BattleTanks.models.Coordinate
 import ru.Shikhov.BattleTanks.models.Element
