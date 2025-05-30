@@ -170,7 +170,7 @@ class BulletDrawer(
 
     private fun stopGameIfNecessary(element: Element){
         if (element.material == Material.PLAYER_TANK || element.material == Material.EAGLE){
-            gameCore.destroyPlayerOrBase()
+            gameCore.destroyPlayerOrBase(enemyDrawer.getPlayerScore())
         }
     }
 
@@ -204,15 +204,15 @@ class BulletDrawer(
         )
     }
 
-    private fun getCoordinatesForLeftOrRightDirection (bulletCoordinate: Coordinate): List<Coordinate> {
-        val topCell = bulletCoordinate.top - bulletCoordinate.top % CELL_SIZE
-        val bottomCell = topCell + CELL_SIZE
-        val leftCoordinate = bulletCoordinate.left - bulletCoordinate.left % CELL_SIZE
-                return listOf(
-                    Coordinate(topCell, leftCoordinate),
-                    Coordinate(bottomCell, leftCoordinate)
-                )
-    }
+ //   private fun getCoordinatesForLeftOrRightDirection (bulletCoordinate: Coordinate): List<Coordinate> {
+  //      val topCell = bulletCoordinate.top - bulletCoordinate.top % CELL_SIZE
+   //     val bottomCell = topCell + CELL_SIZE
+   //     val leftCoordinate = bulletCoordinate.left - bulletCoordinate.left % CELL_SIZE
+   //             return listOf(
+    //                Coordinate(topCell, leftCoordinate),
+   //                 Coordinate(bottomCell, leftCoordinate)
+   //             )
+  //  }
 
 
   private fun createBullet(myTank: View, currentDirection: Direction):ImageView{
